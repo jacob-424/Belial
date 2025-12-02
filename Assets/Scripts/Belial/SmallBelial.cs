@@ -9,7 +9,6 @@ public class SmallBelial : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        FireSmallBelial();
     }
 
     // Update is called once per frame
@@ -17,7 +16,7 @@ public class SmallBelial : MonoBehaviour
     {
     }
 
-    void FireSmallBelial() 
+    internal void FireSmallBelial() 
     {
         for (float rad = 0; rad < 2 * Mathf.PI; rad += (Mathf.PI / 6)) {
             GameObject obj = Instantiate(smallBelialPrefab, transform.position, transform.rotation);

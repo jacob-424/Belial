@@ -1,21 +1,16 @@
-/*
- Author: Jacob Wiley
- Date: 11/30/2025
- Description: Controls missile movement
- */
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MissileController : MonoBehaviour
+public class SmallBelialController : MonoBehaviour
 {
     [SerializeField] float speed;
+    private Vector3 direction;
 
     // Start is called before the first frame update
     void Start()
     {
-        Destroy(gameObject, 5f);
+        Destroy(gameObject, 6f);
     }
 
     // Update is called once per frame
@@ -26,6 +21,11 @@ public class MissileController : MonoBehaviour
 
     void FixedUpdate() 
     {
-        transform.Translate(new Vector3(0, 1, 0) * speed, Space.Self);
+        transform.Translate(direction * speed, Space.Self);
+    }
+
+    public void Intialize(Vector3 direction) 
+    {
+        this.direction = direction;
     }
 }

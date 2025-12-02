@@ -24,7 +24,7 @@ public class BulletController : MonoBehaviour
         
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         transform.Translate(new Vector3(0, 1, 0) * speed, Space.Self);
     }

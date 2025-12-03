@@ -1624,7 +1624,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &739204989
 Transform:
   m_ObjectHideFlags: 0
@@ -3781,7 +3781,7 @@ GameObject:
   - component: {fileID: 1589844795}
   m_Layer: 0
   m_Name: Belial
-  m_TagString: Untagged
+  m_TagString: Belial
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3928,7 +3928,7 @@ TrailRenderer:
   m_Time: 0.15
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 2.5
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -4028,7 +4028,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1589844788}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0

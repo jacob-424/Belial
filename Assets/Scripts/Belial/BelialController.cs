@@ -9,13 +9,15 @@ public class BelialController : MonoBehaviour
     [SerializeField] GameObject outline; // Outline that flashes during flashing phase
     [SerializeField] GameObject player;
 
+    internal static int health;
+
     // Belial phases
-    enum State { 
+    internal enum State { 
         moving,
         flashing,
         dashing
     }
-    private State state;
+    internal static State state;
 
     // Coordinates for the points that Belial can travel to during moving phase
     private int[] xCoords = { -12, -9, -6, -3, 0, 3, 6, 9, 12 };
@@ -30,6 +32,7 @@ public class BelialController : MonoBehaviour
     private float timeElapsed;
     private int fireCount; // Number of times small belial's have been fired
     private int flashCount;
+
 
     // Start is called before the first frame update
     void Start()

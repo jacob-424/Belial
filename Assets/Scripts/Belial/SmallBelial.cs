@@ -16,12 +16,16 @@ public class SmallBelial : MonoBehaviour
     {
     }
 
+    // Fires 12 small Belials in a circle around Belial
     internal void FireSmallBelial() 
     {
-        for (float rad = 0; rad < 2 * Mathf.PI; rad += (Mathf.PI / 6)) {
+        float rad = 0;
+        for (int i = 0; i < 12; i++)
+        {
             GameObject obj = Instantiate(smallBelialPrefab, transform.position, transform.rotation);
             SmallBelialController controller = obj.GetComponent<SmallBelialController>();
             controller.Intialize(new Vector3(Mathf.Cos(rad), Mathf.Sin(rad), 0));
+            rad += (Mathf.PI / 6);
         }
     }
 }

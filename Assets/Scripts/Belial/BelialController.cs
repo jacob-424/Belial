@@ -2,14 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BelialController : MonoBehaviour
 {
     private SmallBelial smallBelial;
     [SerializeField] GameObject outline; // Outline that flashes during flashing phase
     [SerializeField] GameObject player;
+    [SerializeField] Text healthText;
 
-    internal static int health = 1200;
+    internal static int health;
 
     // Belial phases
     internal enum State { 
@@ -34,7 +36,6 @@ public class BelialController : MonoBehaviour
     private int fireCount; // Number of times small belial's have been fired
     private int flashCount;
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -46,6 +47,7 @@ public class BelialController : MonoBehaviour
         flashCount = 0;
 
         state = State.starting;
+        health = 100;
 
         // Moving state initialization
         startPos = rb2d.position;
@@ -54,7 +56,15 @@ public class BelialController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (state == State.starting) {
+        if (health <= 0) {
+            GameController.gameWon = true;
+            gameObject.SetActive(false);
+            healthText.text = "Belial Health: " + 0;
+        }
+        else healthText.text = "Belial Health: " + health;
+
+        if (state == State.starting)
+        {
             Starting();
         }
         
@@ -217,5 +227,6 @@ public class BelialController : MonoBehaviour
             health -= 50;
             Debug.Log("Belial Health: " + health);
         }
+
     }
 }

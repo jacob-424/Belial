@@ -8,13 +8,15 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] float speed;
+    [SerializeField] Text healthText;
     private Rigidbody2D rb2d;
 
-    internal static int health = 100;
+    internal static int health;
     private bool invulnerable;
     private float timeElapsed;
 
@@ -24,6 +26,7 @@ public class PlayerController : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         invulnerable = false;
         timeElapsed = 0;
+        health = 100;
     }
 
     // Update is called once per frame
@@ -35,13 +38,22 @@ public class PlayerController : MonoBehaviour
         Vector2 direction = new Vector2(mousePos.x - transform.position.x, mousePos.y - transform.position.y);
         transform.up = direction;
 
+        if (health <= 0)
+        {
+            gameObject.SetActive(false);
+            GameController.gameOver = true;
+            healthText.text = "Health: 0";
+        }
+        else healthText.text = "Health: " + health;
+
         // Count 2 seconds of invulnerability then make the player vulnerable again
         if (invulnerable && timeElapsed >= 2f)
         {
             invulnerable = false;
             timeElapsed = 0;
         }
-        else if (invulnerable) {
+        else if (invulnerable)
+        {
             timeElapsed += Time.deltaTime;
         }
     }
@@ -66,14 +78,8 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("Belial") && BelialController.state == BelialController.State.dashing && !invulnerable) 
         {
             health -= 15;
-            invulnerable = true; // Grant 2 seconds of invulnerability after being hit
+            invulnerable = true; // Grant 2 seconds of invulnerability
         }
 
-        if (health <= 0)
-        {
-            gameObject.SetActive(false);
-            // Play explosion animation and sound
-            // call gamecontroller gameover function
-        }
     }
 }

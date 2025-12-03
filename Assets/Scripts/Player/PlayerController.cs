@@ -75,7 +75,5 @@ public class PlayerController : MonoBehaviour
             // Play explosion animation and sound
             // call gamecontroller gameover function
         }
-
-        //Debug.Log(health);
     }
 }

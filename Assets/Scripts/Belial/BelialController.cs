@@ -13,6 +13,7 @@ public class BelialController : MonoBehaviour
 
     // Belial phases
     internal enum State { 
+        starting,
         moving,
         flashing,
         dashing
@@ -44,14 +45,19 @@ public class BelialController : MonoBehaviour
         fireCount = 0;
         flashCount = 0;
 
+        state = State.starting;
+
         // Moving state initialization
-        state = State.moving;
         startPos = rb2d.position;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (state == State.starting) {
+            Starting();
+        }
+        
         if (state == State.flashing) {
             Flashing();
         }
@@ -66,6 +72,16 @@ public class BelialController : MonoBehaviour
         else if (state == State.dashing) {
             Dashing();
         }
+    }
+
+    void Starting()
+    {
+        if (timeElapsed >= 1.2f)
+        {
+            state = State.moving;
+            timeElapsed = 0;
+        }
+        else timeElapsed += Time.deltaTime;
     }
 
     void Moving()

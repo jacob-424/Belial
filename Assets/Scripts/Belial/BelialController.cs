@@ -7,6 +7,7 @@ public class BelialController : MonoBehaviour
 {
     private SmallBelial smallBelial;
     [SerializeField] GameObject outline; // Outline that flashes during flashing phase
+    [SerializeField] GameObject player;
 
     // Belial phases
     enum State { 
@@ -22,8 +23,9 @@ public class BelialController : MonoBehaviour
 
     private Vector3 targetPos;
     private Vector3 startPos;
-    private float moveDuration = 3f;
-    private float speed;
+
+    [SerializeField] float dashSpeed;
+    [SerializeField] float moveSpeed;
     private Rigidbody2D rb2d;
     private float timeElapsed;
     private int fireCount; // Number of times small belial's have been fired
@@ -38,7 +40,10 @@ public class BelialController : MonoBehaviour
         timeElapsed = 0;
         fireCount = 0;
         flashCount = 0;
+
+        // Moving state initialization
         state = State.moving;
+        startPos = rb2d.position;
     }
 
     // Update is called once per frame
@@ -60,40 +65,37 @@ public class BelialController : MonoBehaviour
         }
     }
 
-    // Moves Belial to a target position while firing small Belials
-    void Moving() 
+    void Moving()
     {
-        if (timeElapsed == 0) // Start move phase
+        if ((Vector3)rb2d.position == startPos) // Start move phase
         {
             // Generate a new target postion for Belial to move to
             targetPos = new Vector3(xCoords[Random.Range(0, xCoords.Length)], yCoords[Random.Range(0, yCoords.Length)]);
-            startPos = transform.position;
         }
-        else if (timeElapsed >= moveDuration) // Transition to next phase
+        else if ((Vector3)rb2d.position == targetPos) // Transition to next phase
         {
             state = State.flashing;
-            timeElapsed = 0;
             fireCount = 0;
-            rb2d.MovePosition(targetPos);
             return;
         }
 
-        float t = timeElapsed / moveDuration;
+        float distance = Vector3.Distance(startPos, targetPos);
+        float traveledDistance = Vector3.Distance(startPos, rb2d.position);
+        float percent = traveledDistance / distance; // Percentage to the target position
 
         // Fire a small belial when Belial is 25% and 75% to the target position
-        if (t >= 0.25f && fireCount == 0)
+        if (percent >= 0.25f && fireCount == 0)
         {
             smallBelial.FireSmallBelial();
             fireCount++;
         }
-        else if (t >= 0.75f && fireCount == 1)
+        else if (percent >= 0.75f && fireCount == 1)
         {
             smallBelial.FireSmallBelial();
             fireCount++;
         }
 
-        rb2d.MovePosition(Vector3.Lerp(startPos, targetPos, t));
-        timeElapsed += Time.fixedDeltaTime;
+        rb2d.MovePosition(Vector3.MoveTowards(rb2d.position, targetPos, moveSpeed * Time.fixedDeltaTime));
     }
 
     // Periodically flashes the outline to alert the player of the incoming dash attack
@@ -129,6 +131,7 @@ public class BelialController : MonoBehaviour
             state = State.dashing;
             timeElapsed = 0;
             flashCount = 0;
+            targetPos = player.transform.position;
             return;
         }
 
@@ -157,6 +160,28 @@ public class BelialController : MonoBehaviour
     // Perform a dash attack at the player
     void Dashing()
     {
-        
+        outline.SetActive(true);
+
+        // Check if the dash has finished
+        if ((Vector3)rb2d.position == targetPos)
+        {
+            outline.SetActive(false);
+
+            // Wait one second before transitioning to next phase
+            if (timeElapsed < 1f)
+            {
+                timeElapsed += Time.fixedDeltaTime;
+            }
+            else
+            {
+                // Transition to move phase
+                state = State.moving;
+                timeElapsed = 0;
+                startPos = rb2d.position;
+                return;
+            }
+        }
+
+        rb2d.MovePosition(Vector3.MoveTowards(rb2d.position, targetPos, dashSpeed * Time.fixedDeltaTime));
     }
 }

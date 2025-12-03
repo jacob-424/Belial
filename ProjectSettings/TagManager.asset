@@ -6,6 +6,8 @@ TagManager:
   tags:
   - SmallBelial
   - Belial
+  - Bullet
+  - Missile
   layers:
   - Default
   - TransparentFX

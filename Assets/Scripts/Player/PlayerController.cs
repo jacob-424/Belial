@@ -76,6 +76,6 @@ public class PlayerController : MonoBehaviour
             // call gamecontroller gameover function
         }
 
-        Debug.Log(health);
+        //Debug.Log(health);
     }
 }

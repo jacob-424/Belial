@@ -9,7 +9,7 @@ public class BelialController : MonoBehaviour
     [SerializeField] GameObject outline; // Outline that flashes during flashing phase
     [SerializeField] GameObject player;
 
-    internal static int health;
+    internal static int health = 1200;
 
     // Belial phases
     internal enum State { 
@@ -186,5 +186,20 @@ public class BelialController : MonoBehaviour
         }
 
         rb2d.MovePosition(Vector3.MoveTowards(rb2d.position, targetPos, dashSpeed * Time.fixedDeltaTime));
+    }
+
+    void OnTriggerEnter2D(Collider2D other) {
+        if (other.gameObject.CompareTag("Bullet")) {
+            other.gameObject.SetActive(false);
+            health -= 2;
+            Debug.Log("Belial Health: " + health);
+        }
+
+        if (other.gameObject.CompareTag("Missile"))
+        {
+            other.gameObject.SetActive(false);
+            health -= 50;
+            Debug.Log("Belial Health: " + health);
+        }
     }
 }

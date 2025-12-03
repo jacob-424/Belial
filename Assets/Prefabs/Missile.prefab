@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 8885056437629222319}
   - component: {fileID: 8885056437629222305}
   - component: {fileID: -525048460194014703}
+  - component: {fileID: -2869213402098199750}
   m_Layer: 0
   m_Name: Missile
-  m_TagString: Untagged
+  m_TagString: Missile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -207,3 +208,40 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
   m_Emitting: 1
+--- !u!60 &-2869213402098199750
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8885056437629222318}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.2}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.64, y: 0.64}
+    newSize: {x: 0.64, y: 0.64}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.121760726, y: 0.18725342}
+      - {x: 0.024410991, y: 0.31}
+      - {x: -0.01838375, y: 0.31}
+      - {x: -0.07, y: 0.25}
+      - {x: -0.19323249, y: 0.09309677}
+      - {x: -0.22626851, y: -0.036557004}
+      - {x: -0.22342609, y: -0.18093242}
+      - {x: -0.08410896, y: -0.31}
+      - {x: 0.08, y: -0.31}
+      - {x: 0.24, y: -0.19}
+      - {x: 0.24, y: -0.049999997}
+      - {x: 0.19, y: 0.099999994}

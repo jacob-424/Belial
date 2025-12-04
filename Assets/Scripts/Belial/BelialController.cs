@@ -8,9 +8,9 @@ public class BelialController : MonoBehaviour
 {
     private SmallBelial smallBelial;
     [SerializeField] GameObject outline; // Outline that flashes during flashing phase
+    [SerializeField] GameObject explosion;
     [SerializeField] GameObject player;
     [SerializeField] Text healthText;
-    AudioSource[] sounds;
 
     internal static int health;
 
@@ -42,8 +42,8 @@ public class BelialController : MonoBehaviour
     {
         rb2d = GetComponent<Rigidbody2D>();
         smallBelial = GetComponent<SmallBelial>();
-        sounds = GetComponents<AudioSource>();
         outline.SetActive(false);
+        explosion.SetActive(false);
         timeElapsed = 0;
         fireCount = 0;
         flashCount = 0;
@@ -61,6 +61,14 @@ public class BelialController : MonoBehaviour
         if (health <= 0) {
             GameController.gameWon = true;
             gameObject.SetActive(false);
+
+            // Explosion animation
+            explosion.transform.position = rb2d.position;
+            explosion.SetActive(true);
+
+            // Explosion audio
+            AudioController.PlayExplosion();
+
             healthText.text = "Belial Health: " + 0;
         }
         else healthText.text = "Belial Health: " + health;
@@ -220,7 +228,6 @@ public class BelialController : MonoBehaviour
         if (other.gameObject.CompareTag("Bullet")) {
             other.gameObject.SetActive(false);
             health -= 2;
-            Debug.Log("Belial Health: " + health);
         }
 
         if (other.gameObject.CompareTag("Missile"))
@@ -228,8 +235,6 @@ public class BelialController : MonoBehaviour
             other.gameObject.SetActive(false);
             health -= 50;
             AudioController.PlayMissileExplosion();
-            Debug.Log("Belial Health: " + health);
         }
-
     }
 }

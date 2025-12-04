@@ -14,13 +14,11 @@ public class MissileLauncher : MonoBehaviour
     private Vector3 missileSpawn; // Missle spawn position
     private float seconds; // Time in seconds since the last missile was fired
     [SerializeField] float fireRate;
-    AudioSource[] sounds;
 
     // Start is called before the first frame update
     void Start()
     {
         seconds = fireRate;
-        sounds = GetComponents<AudioSource>();
     }
 
     // Update is called once per frame

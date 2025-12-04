@@ -13,6 +13,7 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] float speed;
+    [SerializeField] GameObject explosion;
     [SerializeField] Text healthText;
     private Rigidbody2D rb2d;
 
@@ -25,6 +26,7 @@ public class PlayerController : MonoBehaviour
     {
         rb2d = GetComponent<Rigidbody2D>();
         invulnerable = false;
+        explosion.SetActive(false);
         timeElapsed = 0;
         health = 100;
     }
@@ -42,6 +44,14 @@ public class PlayerController : MonoBehaviour
         {
             gameObject.SetActive(false);
             GameController.gameOver = true;
+
+            // Explosion animation
+            explosion.transform.position = rb2d.position;
+            explosion.SetActive(true);
+
+            // Explosion audio
+            AudioController.PlayExplosion();
+            
             healthText.text = "Health: 0";
         }
         else healthText.text = "Health: " + health;

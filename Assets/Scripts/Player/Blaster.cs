@@ -16,11 +16,13 @@ public class Blaster : MonoBehaviour
     private Vector3 rightSpawn; // Right blaster position
     private float seconds; // Time in seconds since the last bullet fired
     [SerializeField] float fireRate;
+    AudioSource[] sounds;
 
     // Start is called before the first frame update
     void Start()
     {
         seconds = fireRate;
+        sounds = GetComponents<AudioSource>();
     }
 
     // Update is called once per frame
@@ -34,6 +36,7 @@ public class Blaster : MonoBehaviour
         if (Input.GetMouseButton(0) && seconds >= fireRate) {
             Instantiate(bullet, leftSpawn, transform.rotation);
             Instantiate(bullet, rightSpawn, transform.rotation);
+            AudioController.PlayBullet();
             seconds = 0f;
         }
     }

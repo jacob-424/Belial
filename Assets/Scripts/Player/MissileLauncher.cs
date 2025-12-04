@@ -14,11 +14,13 @@ public class MissileLauncher : MonoBehaviour
     private Vector3 missileSpawn; // Missle spawn position
     private float seconds; // Time in seconds since the last missile was fired
     [SerializeField] float fireRate;
+    AudioSource[] sounds;
 
     // Start is called before the first frame update
     void Start()
     {
         seconds = fireRate;
+        sounds = GetComponents<AudioSource>();
     }
 
     // Update is called once per frame
@@ -30,6 +32,7 @@ public class MissileLauncher : MonoBehaviour
         // Fire missile when right mouse button is pressed and enough time has passed since the last missile
         if (Input.GetMouseButtonDown(1) && seconds >= fireRate) {
             Instantiate(missile, missileSpawn, transform.rotation);
+            AudioController.PlayMissileLaunch();
             seconds = 0f;
         }
     }

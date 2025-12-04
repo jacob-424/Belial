@@ -10,6 +10,7 @@ public class BelialController : MonoBehaviour
     [SerializeField] GameObject outline; // Outline that flashes during flashing phase
     [SerializeField] GameObject player;
     [SerializeField] Text healthText;
+    AudioSource[] sounds;
 
     internal static int health;
 
@@ -41,13 +42,14 @@ public class BelialController : MonoBehaviour
     {
         rb2d = GetComponent<Rigidbody2D>();
         smallBelial = GetComponent<SmallBelial>();
+        sounds = GetComponents<AudioSource>();
         outline.SetActive(false);
         timeElapsed = 0;
         fireCount = 0;
         flashCount = 0;
 
         state = State.starting;
-        health = 100;
+        health = 600;
 
         // Moving state initialization
         startPos = rb2d.position;
@@ -225,6 +227,7 @@ public class BelialController : MonoBehaviour
         {
             other.gameObject.SetActive(false);
             health -= 50;
+            AudioController.PlayMissileExplosion();
             Debug.Log("Belial Health: " + health);
         }
 

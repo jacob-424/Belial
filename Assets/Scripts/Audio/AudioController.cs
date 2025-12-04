@@ -37,4 +37,9 @@ public class AudioController : MonoBehaviour
     {
         sounds[3].Play();
     }
+
+    internal static void PlayDamage()
+    {
+        sounds[4].Play();
+    }
 }

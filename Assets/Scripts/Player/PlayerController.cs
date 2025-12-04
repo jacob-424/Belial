@@ -81,15 +81,16 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("SmallBelial") && !invulnerable)
         {
             other.gameObject.SetActive(false);
+            AudioController.PlayDamage();
             health -= 10;
         }
 
         // Tale 15 points of damage if hit by Belial while he is dashing
         if (other.gameObject.CompareTag("Belial") && BelialController.state == BelialController.State.dashing && !invulnerable) 
         {
-            health -= 15;
             invulnerable = true; // Grant 2 seconds of invulnerability
+            AudioController.PlayDamage();
+            health -= 15;
         }
-
     }
 }

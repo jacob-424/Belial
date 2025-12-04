@@ -27,14 +27,14 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (gameWon) 
+        if (gameWon && !gameOver) 
         {
             restartButton.gameObject.SetActive(true);
             menuButton.gameObject.SetActive(true);
             winText.gameObject.SetActive(true);
         }
 
-        if (gameOver) 
+        if (gameOver && !gameWon) 
         {
             restartButton.gameObject.SetActive(true);
             menuButton.gameObject.SetActive(true);

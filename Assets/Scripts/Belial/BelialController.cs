@@ -49,7 +49,7 @@ public class BelialController : MonoBehaviour
         flashCount = 0;
 
         state = State.starting;
-        health = 600;
+        health = 2000;
 
         // Moving state initialization
         startPos = rb2d.position;

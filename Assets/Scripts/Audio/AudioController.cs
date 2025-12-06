@@ -1,3 +1,9 @@
+/*
+ Author: Jacob Wiley
+ Date: 12/5/2025
+ Description: Manages sound effects and allows other scripts to play them
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

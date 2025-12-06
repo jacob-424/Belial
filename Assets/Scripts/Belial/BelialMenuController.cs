@@ -1,3 +1,9 @@
+/*
+ Author: Jacob Wiley
+ Date: 12/5/2025
+ Description: Controls Belial's movement on the menu screen
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -5,16 +11,16 @@ using UnityEngine;
 
 public class BelialMenuController : MonoBehaviour
 {
-
     // Coordinates for the points that Belial can travel to
     private int[] xCoords = { -12, -9, -6, -3, 0, 3, 6, 9, 12 };
     private int[] yCoords = { -6, -3, 0, 3, 6 };
 
     private Vector3 targetPos;
     private Vector3 startPos;
+
     [SerializeField] float moveSpeed;
     private Rigidbody2D rb2d;
-    private float timeElapsed;
+    private float timeElapsed; // Tracks time between movements
 
     // Start is called before the first frame update
     void Start()
@@ -39,14 +45,14 @@ public class BelialMenuController : MonoBehaviour
     // Moves Belial around the screen
     void Moving()
     {
-        // Pick a new target position after a 1.2 second delay upon reaching the previous target
-        if ((Vector3)rb2d.position == targetPos && timeElapsed >= 1.2f)
+        if ((Vector3)rb2d.position == targetPos && timeElapsed >= 1.2f) // Pick new target position after 1.2 second delay
         {
             // Generate a new target postion for Belial to move to
             targetPos = new Vector3(xCoords[Random.Range(0, xCoords.Length)], yCoords[Random.Range(0, yCoords.Length)]);
             timeElapsed = 0f;
         }
-        else if ((Vector3)rb2d.position == targetPos) {
+        else if ((Vector3)rb2d.position == targetPos) // Wait 1.2 second delay
+        {
             timeElapsed += Time.fixedDeltaTime;
         }
 

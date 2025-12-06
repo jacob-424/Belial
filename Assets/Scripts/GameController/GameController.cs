@@ -1,3 +1,9 @@
+/*
+ Author: Jacob Wiley
+ Date: 12/5/2025
+ Description: Manages game state, UI, and scene loading
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +16,8 @@ public class GameController : MonoBehaviour
     [SerializeField] Button menuButton;
     [SerializeField] Text winText;
     [SerializeField] Text loseText;
+
+    // Game state
     internal static bool gameOver;
     internal static bool gameWon;
 
@@ -27,14 +35,14 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (gameWon && !gameOver) 
+        if (gameWon && !gameOver) // Player won
         {
             restartButton.gameObject.SetActive(true);
             menuButton.gameObject.SetActive(true);
             winText.gameObject.SetActive(true);
         }
 
-        if (gameOver && !gameWon) 
+        if (gameOver && !gameWon) // Player lost
         {
             restartButton.gameObject.SetActive(true);
             menuButton.gameObject.SetActive(true);

@@ -1,3 +1,9 @@
+/*
+ Author: Jacob Wiley
+ Date: 12/5/2025
+ Description: Prevents the final frame of the explosions from lingering
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

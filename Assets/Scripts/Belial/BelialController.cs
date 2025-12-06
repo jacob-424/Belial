@@ -1,3 +1,9 @@
+/*
+ Author: Jacob Wiley
+ Date: 12/5/2025
+ Description: Controls Belial's movement, attack phases, and health
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -7,12 +13,12 @@ using UnityEngine.UI;
 public class BelialController : MonoBehaviour
 {
     private SmallBelial smallBelial;
-    [SerializeField] GameObject outline; // Outline that flashes during flashing phase
-    [SerializeField] GameObject explosion;
+    [SerializeField] GameObject outline; // Red outline for flashing and dashing phases
+    [SerializeField] GameObject explosion; // Explosion death animation
     [SerializeField] GameObject player;
-    [SerializeField] Text healthText;
 
     internal static int health;
+    [SerializeField] Text healthText;
 
     // Belial phases
     internal enum State { 
@@ -34,8 +40,8 @@ public class BelialController : MonoBehaviour
     [SerializeField] float moveSpeed;
     private Rigidbody2D rb2d;
     private float timeElapsed;
-    private int fireCount; // Number of times small belial's have been fired
-    private int flashCount;
+    private int fireCount; // Small belial fire count for moving phase
+    private int flashCount; // Outline flash count for flashing phase
 
     // Start is called before the first frame update
     void Start()
@@ -47,31 +53,30 @@ public class BelialController : MonoBehaviour
         timeElapsed = 0;
         fireCount = 0;
         flashCount = 0;
-
-        state = State.starting;
         health = 2000;
 
-        // Moving state initialization
+        // Initial phase
+        state = State.starting;
+
+        // Moving phase initialization
         startPos = rb2d.position;
     }
 
-    // Update is called once per frame
+    // Manages starting/flashing phases and health UI
     void Update()
     {
         if (health <= 0) {
             GameController.gameWon = true;
             gameObject.SetActive(false);
 
-            // Explosion animation
+            // Explosion death animation
             explosion.transform.position = rb2d.position;
             explosion.SetActive(true);
 
-            // Explosion audio
-            AudioController.PlayExplosion();
-
-            healthText.text = "Belial Health: " + 0;
+            AudioController.PlayExplosion(); // SFX
+            healthText.text = "Belial Health: " + 0; // UI
         }
-        else healthText.text = "Belial Health: " + health;
+        else healthText.text = "Belial Health: " + health; // UI
 
         if (state == State.starting)
         {
@@ -83,6 +88,7 @@ public class BelialController : MonoBehaviour
         }
     }
 
+    // Manages moving and dashing phases
     void FixedUpdate()
     {
         if (state == State.moving)
@@ -94,19 +100,23 @@ public class BelialController : MonoBehaviour
         }
     }
 
+    // Adds a 1.2 second delay before entering moving phase
+    // Occurs only once at the start
     void Starting()
     {
+        // Count to 1.2 seconds
         if (timeElapsed >= 1.2f)
         {
-            state = State.moving;
+            state = State.moving; // Transition to moving phase
             timeElapsed = 0;
         }
         else timeElapsed += Time.deltaTime;
     }
 
+    // Moves Belial to a new position while firing two bursts of small Belials
     void Moving()
     {
-        if ((Vector3)rb2d.position == startPos) // Start move phase
+        if ((Vector3)rb2d.position == startPos) // Moving phase initialization
         {
             // Generate a new target postion for Belial to move to
             targetPos = new Vector3(xCoords[Random.Range(0, xCoords.Length)], yCoords[Random.Range(0, yCoords.Length)]);
@@ -118,8 +128,8 @@ public class BelialController : MonoBehaviour
             return;
         }
 
-        float distance = Vector3.Distance(startPos, targetPos);
-        float traveledDistance = Vector3.Distance(startPos, rb2d.position);
+        float distance = Vector3.Distance(startPos, targetPos); // Distance to target position
+        float traveledDistance = Vector3.Distance(startPos, rb2d.position); // Total distance traveled from start position
         float percent = traveledDistance / distance; // Percentage to the target position
 
         // Fire a small belial when Belial is 25% and 75% to the target position
@@ -137,10 +147,10 @@ public class BelialController : MonoBehaviour
         rb2d.MovePosition(Vector3.MoveTowards(rb2d.position, targetPos, moveSpeed * Time.fixedDeltaTime));
     }
 
-    // Periodically flashes the outline to alert the player of the incoming dash attack
+    // Periodically flashes the red outline to alert the player of the incoming dash attack
     void Flashing() 
     {
-        // Flash every 500ms for 300ms, 5 times
+        // Flash red outline every 500ms for 300ms, 5 times
         switch(flashCount)
         {
             case 0:
@@ -180,11 +190,11 @@ public class BelialController : MonoBehaviour
     // Turns the flash outline on if the total elapsed time is between startTime and endTime
     void Flash(float startTime, float endTime) 
     {
-        if (timeElapsed >= startTime && timeElapsed < endTime)
+        if (timeElapsed >= startTime && timeElapsed < endTime) // Show outline
         {
             outline.SetActive(true);
         }
-        else
+        else // Do not show outline
         {
             outline.SetActive(false);
 
@@ -196,7 +206,7 @@ public class BelialController : MonoBehaviour
         }
     }
 
-    // Perform a dash attack at the player
+    // Perform a dash attack at the player dealing damage
     void Dashing()
     {
         outline.SetActive(true);
@@ -206,14 +216,13 @@ public class BelialController : MonoBehaviour
         {
             outline.SetActive(false);
 
-            // Wait one second before transitioning to next phase
-            if (timeElapsed < 1f)
+            
+            if (timeElapsed < 1f) // Wait 1 second before transitioning to next phase
             {
                 timeElapsed += Time.fixedDeltaTime;
             }
-            else
+            else // Transition to move phase
             {
-                // Transition to move phase
                 state = State.moving;
                 timeElapsed = 0;
                 startPos = rb2d.position;
@@ -224,17 +233,21 @@ public class BelialController : MonoBehaviour
         rb2d.MovePosition(Vector3.MoveTowards(rb2d.position, targetPos, dashSpeed * Time.fixedDeltaTime));
     }
 
+    // Detect when Belial is hit by a bullet or missile
     void OnTriggerEnter2D(Collider2D other) {
+        
+        // Bullet collision
         if (other.gameObject.CompareTag("Bullet")) {
             other.gameObject.SetActive(false);
             health -= 2;
         }
 
+        // Missile collision
         if (other.gameObject.CompareTag("Missile"))
         {
             other.gameObject.SetActive(false);
             health -= 50;
-            AudioController.PlayMissileExplosion();
+            AudioController.PlayMissileExplosion(); // SFX
         }
     }
 }

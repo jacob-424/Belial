@@ -1,3 +1,9 @@
+/*
+ Author: Jacob Wiley
+ Date: 12/5/2025
+ Description: Manages menu scene
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

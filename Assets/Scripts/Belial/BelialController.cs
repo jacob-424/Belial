@@ -53,7 +53,7 @@ public class BelialController : MonoBehaviour
         timeElapsed = 0;
         fireCount = 0;
         flashCount = 0;
-        health = 2000;
+        health = 1000;
 
         // Initial phase
         state = State.starting;
